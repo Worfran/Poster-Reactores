@@ -6,6 +6,8 @@
 \usepackage{graphicx} 
 \usepackage{subfig}
 \usepackage{bm}
+\usepackage{amsmath}
+\usepackage{mathtools} % Provides \prescript command
 
 \usepackage[utf8]{inputenc} %unicode support
 \usepackage[T1]{fontenc}
@@ -27,7 +29,16 @@
   {\begin{enumerate}\renewcommand\labelenumi{\textbf\theenumi.}}
   {\end{enumerate}}
 
-
+  \let\oldthebibliography\thebibliography
+  \let\endoldthebibliography\endthebibliography
+  \renewenvironment{thebibliography}[1]{
+    \begin{oldthebibliography}{#1}
+      \setlength{\itemsep}{0em}
+      \setlength{\parskip}{0em}
+  }
+  {
+    \end{oldthebibliography}
+  }
 
 \begin{document}
 
@@ -63,72 +74,76 @@ linewidth=2pt % Width of the border lines around content boxes
 \includegraphics[scale=0.2]{figures/LogoAndes.jpeg}
 }
 { % Poster title
-\textsf{Thorium Fuel Cycle in Nuclear Reactors}
+\textsf{\Huge Thorium Fuel Cycle in Nuclear Reactors}
 }
 {% Author names
-\sf\vspace{0.5em}
+\sf\huge\vspace{0.3em}
 F. Garcia  \& J. Sanabria.\\
 \vspace{0.1em}
 \small{
 Departamento de física, Universidad de los Andes, Bogotá, Colombia. \\
-\vspace{0.2em}
-fw.garcia@uniandes.edu.co}}
+\vspace{0.1em}
+fw.garcia@uniandes.edu.co}
+}
 
 
 \headerbox{Abstract}{name=Abstract,column=0,row=0, span=3}{
-Ferromagnetic and ferroelectric materials undergo phase transitions that allow them to maintain remnant magnetization or electrical polarization at low temperatures, even in the absence of an external field. It has been observed that the introduction of defects in the crystal lattice promotes the appearance of ferroic orders. Recently, a multiferroic transition at room temperature was observed in Te-doped transition metal dichalcogenide $WSe_2$, where the material exhibited the coexistence of ferroelectric and ferromagnetic orders, with a significant influence of vacancies on the emergence of these properties. Based on these studies, it is proposed that similar materials, such as $Mo(Se_{1-x}Te_x)_{2(1-\delta)}$, could exhibit analogous behaviors.\cite{Ferroelectric_MoTe2,Ferromagnetic_MoSe2}
+  This project explores the potential of thorium-based nuclear fuels in Pressurized Water Reactors (PWRs), focusing on the thorium fuel cycle and its various implementations. The research investigates the benefits and challenges associated with thorium fuel, including its higher conversion ratios, improved thermal properties, and intrinsic proliferation resistance. Detailed simulations using OpenMC analyze the behavior of thorium oxide (ThOX) with \(\prescript{233}{}{U}\) at different concentrations. The results demonstrate that while thorium-based fuels can achieve breeding, maintaining criticality presents challenges. The project also examines the impact of fuel composition and concentration on reactor performance and safety. The findings suggest that optimizing these parameters is crucial for enhancing the performance and safety of thorium-based fuels. The research concludes with a discussion on the future prospects of thorium in the nuclear industry and the need for further research and development to fully realize its potential as a sustainable nuclear fuel.
 }
 
 
 
 
-\headerbox{1. Introduction}{name=Introduccion,span=1,column=0,below=Abstract}{
-Recently, room temperature multiferroicity was observed on the solid solution $W(Se_{1-x}Te_x)_{2(1-\delta)}$ where x represents the Te doping and $\delta$ the chalcogen vacancies, this commposite was formed by the combination of the  semimetal $WSe_2$ and the semiconductor $WTe_2$ \cite{RoomT}. The analysis of multiple stechiometric variations for this solution showed that the doping promoted the formation of vacancies, wich showed to be crucial for the prescence of ferroic orders.
-\begin{center}
-\includegraphics[scale=0.22]{figures/WSe2.png}
-\end{center}
-\captionof{figure}{\footnotesize PFM and VSM curves for different compositions of $W(Se_{1-x}Te_x)_{2(1-\delta)}$, both curves show the hysteresis characteristic of ferroic orders.}
+\headerbox{1. Introduction}{name=Introduction, span=1,column=0,below=Abstract}{
+  At the time, there were concerns that the global supply of \(\prescript{235}{}{U}\) would be insufficient to meet future energy demands. Weinberg and his colleagues recognized that molten salt reactors (MSRs) could be used to breed \(\prescript{233}{}{U}\) from thorium \cite{TMSR_book}. Between 1965 and 1969, ORNL successfully operated an MSR experiment for 15 months, achieving an impressive \(87\%\) operational uptime, even utilizing \(\prescript{233}{}{U}\) as fuel \cite{TMSR_book}. Despite this success, the MSR program was eventually discontinued as other nuclear concepts received greater political support \cite{IAEA2005}. Thorium is not a fissile material but rather a fertile material, so the idea of the thorium fuel cycle is to breed \(\prescript{233}{}{U}\).
+
+  \begin{center}
+    \includegraphics[scale=0.25]{Th_breeding.png}
+    \captionof{figure}{\footnotesize \(\prescript{233}{}{U}\) breeding from \(\prescript{232}{}{Th}\). Image from \cite{Donev2024}}
+  \end{center}
 }
 
 
-\headerbox{2. Experimental Methods}{name=Metodologia,span=1,column=0,below=Introduccion}{
-1. Crystal growth:
-\begin{center}
-\includegraphics[scale=0.16]{figures/CVY3.png}
-\end{center}
-\captionof{figure}{\footnotesize Main stages of the growth process for the $Mo(Se_{1-x}Te_x)_{2(1-\delta)}$ crystals.}
-2. Techinques used for characterization:
-\begin{itemize}
-    \item X-Ray Diffraction (XRD) and Raman spectroscopy: To observe changes in the crystal structure due to the introduction of defects.
-    \item X-Ray fluorescence: To determine the stoichiometry of different samples.
-    \item Vibrating sample magnetometry and piezoelectric force microscopy: To analyze the magnetic and electric orders in different solutions.
-\end{itemize}
+\headerbox{2. Simulations}{name=Simulations, span=1,column=0,below=Introduction}{
+  The simulation uses OpenMC, a Monte Carlo neutron transport simulation library developed by the Computational Reactor Physics Group (CRPG) at MIT. The objective was to analyze the behavior of thorium-based nuclear fuels in a PWR as a reference for other reactor types. In this project, a Pressurized Water Reactor (PWR) simulation was conducted to evaluate different thorium fuel cycles.
+
+  \begin{center}
+  \includegraphics[scale=0.16]{OpenMC_logo.png}
+  \captionof{figure}{\footnotesize OpenMC Logo \cite{OpenMC}.}
+  \end{center}
+
 }
 
 
-\headerbox{3. Results}{name=Resultados,span=2,column=1,below= Abstract}{
-XRD results for multiple compositions of $Mo(Se_{1-x}Te_x)_{2(1-\delta)}$ show that the main diffraction peaks correspond to the (00l) family of planes, which display a shift in the $2\theta$ angle where the peaks are located. Since these planes are directly related to the lattice parameter \textit{c}, the shift represents a variation in the magnitude of \textit{c}. In the second figure, it can be observed that the lattice parameter \textit{c} increases with the amount of doping in the samples.
-\begin{center}
-\includegraphics[scale=0.3]{figures/XRDFfinal.png}
-\end{center}
-\captionof{figure}{\footnotesize a) shows the XRD pattern for multiple solutions of $Mo(Se_{1-x}Te_x)_{2(1-\delta)}$ compared to the expected peaks for $MoSe_2$. b) shows the calculated values for the lattice parameter \textit{c}, based on the observed diffraction pattern. }
-The Raman spectra for multiple compositions of $Mo(Se_{1-x}Te_x)_{2(1-\delta)}$ show that the dominant phase in the solutions varies depending on the doping level. It was observed that this dominant phase corresponds to the pure composition closest to the one under analysis. Furthermore, for compositions closer to $MoTe_2$, peaks associated with both the 2H and 1T' crystal phases were observed, indicating a coexistence of crystal phases, with the 1T' phase being dominant.
+\headerbox{3. Results}{name=Results,span=2,column=1,below= Abstract}{
+  Simulations were conducted using uranium oxide fuel with thorium concentrations of \(10\%\) and \(50\%\). The results indicated that increasing the thorium concentration improved the conversion ratio, consistent with findings in \cite{N_Improvement}. However, higher thorium concentrations also presented challenges in maintaining criticality. The results suggest that while higher thorium concentrations can enhance fuel utilization, careful optimization of fuel composition and reactor parameters is essential to ensure stable and efficient reactor operation. \textbf{Fig.} \ref{fig:Th_10} shows the isotopes concentration in the fuel as a function of time for a \(10\%\) thorium concentration. Additional, \textbf{Fig.} \ref{fig:Th_10_r} shows the reactivity as a function of time for the same thorium concentration.
 
-\begin{center}
-\includegraphics[scale=0.31]{figures/RamanFinalll.png}
-\end{center}
-\captionof{figure}{\footnotesize The Raman spectra for multiple compositions of $Mo(Se_{1-x}Te_x)_{2(1-\delta)}$ show that the dominant phase in the solutions changes with the doping level. Figure (a) presents the Raman spectrum that most closely resembles that of pure $MoTe_2$ compared to the expected peaks (vertical lines), along with a representation of the $B_g$ and $A_1$ Raman modes. It can be observed that some peaks correspond to different crystal phases. Figure (b) presents the Raman spectrum that most closely resembles $MoSe_2$ in its 2H crystal phase compared to the expected peaks (vertical lines), along with a representation of the $A_{1g}$ and $E_g$ Raman modes.}
+  \begin{center}
+    \includegraphics[scale=0.25]{percentual_change_th232_con_10.pdf}
+    \captionof{figure}{\footnotesize Isotopes concentration in the fuel as function time for a \(10\%\) thorium concentration.}
+    \label{fig:Th_10}
+  \end{center}
 
-Both sets of results indicate that the introduction of crystal defects significantly alters the crystal structure, changing the dominant crystal phase. This causes effects such as an increase in lattice parameters and the breaking of centrosymmetry due to the transition to the 1T' phase.
+  \begin{center}
+    \includegraphics[scale=0.3]{Reactivity_vs_Time_UOX_10.pdf}
+    \captionof{figure}{\footnotesize Reactivity as function of time.}
+    \label{fig:Th_10_r}
+  \end{center}
+
+
+  Additional simulations explored thorium-based fuel with thorium oxide and \(10\%\) plutonium as the seed isotope. Results demonstrate that the fuel assembly achieves a critical state and attains a breeding ratio for the production of \(\prescript{233}{}{U}\), showcasing the potential for sustainable fuel generation. 
+
 }
-\headerbox{4.Conclusions and future work}{name=Conclusiones,column=1,below=Resultados,span=2}{The crystallographic analysis shows that doping effectively distorts the crystal structure, altering both the lattice parameters and the crystal phase, indicating a breaking of centrosymmetry in the system. This symmetry breaking is identified as a factor inducing spontaneous polarization in crystal systems. Future work should focus on identifying the direct effect of vacancies on the crystal structure by producing compositions with more controlled vacancies. In parallel with crystal structure analysis, the effects of both doping and vacancies on the ferroic orders of the solution remain to be analyzed.
+
+\headerbox{4. Conclusions}{name=Conclusions, column=1,below=Results, span=2}{ 
+  The study demonstrates that thorium-based fuels, particularly ThOX with plutonium, can achieve breeding but exhibit higher reactivity, necessitating optimized fuel composition and core configurations. Thorium, as a fertile material, cannot sustain a chain reaction independently and requires external support for activation. Despite its potential benefits, the implementation of thorium fuel cycles faces significant challenges, including historical political inaction and current economic hurdles in reprocessing irradiated thorium fuel. These factors have hindered its widespread adoption in modern reactors. Further research and development are essential to overcome these challenges and fully realize the potential of thorium as a sustainable nuclear fuel.
 }
 
-\headerbox{ References}{name=Referecencias,column=0,below=Metodologia,span=1}{
+\headerbox{ References}{name=References, column=0,below=Simulations,span=1}{
 
-\footnotesize 
+\scriptsize
 \renewcommand{\section}[2]{\vskip 0.05em} % Get rid of the default "References" section title
-\nocite{*} % Insert publications even if they are not cited in the poster
+%\nocite{*} % Insert publications even if they are not cited in the poster
 
 \bibliographystyle{naturemag}
 \bibliography{poster} % Use sample.bib as the bibliography file
